@@ -125,7 +125,8 @@
             />
             <polygon points="785,100 800,100 800,10 830,10 830,220 785,220 785,100" class="white pianoKey" data-key="112" />
             <polygon points="230,10 260,10 260,100 230,100 230,10" class="black pianoKey" data-key="49" />
-            <polygon points="275,10 305,10 305,100 275,100 275,10" class="black pianoKey" data-key="50" />
+*-+
+           <polygon points="275,10 305,10 305,100 275,100 275,10" class="black pianoKey" data-key="50" />
             <polygon points="365,10 395,10 395,100 365,100 365,10" class="black pianoKey" data-key="51" />
             <polygon points="410,10 440,10 440,100 410,100 410,10" class="black pianoKey" data-key="52" />
             <polygon points="455,10 485,10 485,100 455,100 455,10" class="black pianoKey" data-key="53" />
@@ -153,7 +154,7 @@
         <audio data-key="116" src="./pianoSounds/high_d.mp3"></audio>
         <audio data-key="55" src="./pianoSounds/high_d_sharp.mp3"></audio>
         <audio data-key="121" src="./pianoSounds/high_e.mp3"></audio>
-        <audio data-key="117" src="./pianoSounds/high_f.mp3"></audio>
+     + +  <audio data-key="117" src="./pianoSounds/high_f.mp3"></audio>
         <audio data-key="56" src="./pianoSounds/high_f_sharp.mp3"></audio>
         <audio data-key="105" src="./pianoSounds/high_g.mp3"></audio>
         <audio data-key="57" src="./pianoSounds/high_g_sharp.mp3"></audio>
@@ -165,6 +166,35 @@
 </body>
 
 <script>
+    //keypress event
+    window.addEventListener("keypress", function(e) {
+
+    //add 2 vars within event handler(one that references tone, & one that references the pianokey(polygon thats active when key is pressed))
+    //access tone w/ selector & the keyCode
+    let tone = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    
+    //condition to check if tone is falsy
+    if(!tone) return;
+
+    //access pianokey w/ selector & the keyCode
+    let pianoKey = document.querySelector(`.pianoKey[data-key="${e.keyCode}"]`);
+
+    // when you press the key consecutively, it doesnt restart the tone. it allows the current tone to finish playing. To fix that, set "currentTime" to 0 before we play
+    tone.currentTime = 0;
+    
+    //adding the class pressed to pianoKey element
+    pianoKey.classList.add("pressed");
+
+    //within eventhandler invoke play on tone element 
+    tone.play();
+
+    //to slow down wrap class removal in setTimeout to be removed after 300 milliseconds or 3 seconds.
+    setTimeout(function(){
+
+        //after our tone plays, remove pressed from element pianoKey
+        pianoKey.classList.remove("pressed");
+    }, 300); 
+});
 </script>
 
 </html>
